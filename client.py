@@ -3,6 +3,8 @@ import sys
 import socket
 import struct
 import time
+from connection import *
+
 
 
 ###########################################################
@@ -14,12 +16,8 @@ def send_data(server_ip, server_port, data):
     '''
     Send data to server in address (server_ip, server_port).
     '''
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print(str(server_ip) + ':' + str(server_port))
-    sock.connect((server_ip, server_port))
-
-    length = struct.pack('<I', len(data.encode()))
-    sock.send(length + data.encode())
+    with Connection.connect(server_ip, server_port) as conn:
+        conn.send(data)
 
 
 ###########################################################
