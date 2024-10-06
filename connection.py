@@ -1,5 +1,7 @@
 import socket
 import struct
+from typing import Union
+import time
 
 class Connection:
     def __init__(self, connection: socket.socket):
@@ -20,16 +22,20 @@ class Connection:
         sock.connect((host, port))
         return cls(sock)
 
-    def send(self, message: str):
-        data = message.encode()
-        length = struct.pack('<I', len(data))
-        self.connection.send(length + data)
+    def send(self, message: Union[str, bytes]):
+        if isinstance(message, str):
+            message = message.encode()
+        length = struct.pack('<I', len(message))
+        self.connection.send(length + message)
 
-    def receive(self):
+    def receive(self) -> Union[bytes, None]:
         try:
             packed = self.connection.recv(4)
             length = struct.unpack('<I', packed)[0]
-            data = self.connection.recv(length).decode()
+            print(length)
+            data = self.connection.recv(length)
+            while len(data) < length:
+                data += self.connection.recv(length)
             return data
         except Exception as e:
             print(e)

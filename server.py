@@ -7,6 +7,8 @@ import threading
 import time
 from listener import *
 from connection import *
+from CryptImage import CryptImage
+from Card import Card
 
 def handle_client(connection: Connection):
     """
@@ -16,7 +18,8 @@ def handle_client(connection: Connection):
         print(f"A new connection from {connection.source}")
         data = connection.receive()
         if data:
-            print(data)
+            card = Card.deserialize(data)
+            print(str(card))
 
 def get_args():
     """
