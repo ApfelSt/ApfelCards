@@ -1,11 +1,11 @@
 from os import PathLike
-from typing import Union
+from typing import Union, Optional
 from PIL import Image
 from Crypto.Cipher import AES
 import hashlib
 
 class CryptImage:
-    def __init__(self, img: Image.Image, hash_key: Union[bytes, None]) -> None:
+    def __init__(self, img: Image.Image, hash_key: Optional[bytes]) -> None:
         self.img = img
         self.hash_key = hash_key
 
