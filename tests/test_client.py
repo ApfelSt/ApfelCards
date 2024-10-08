@@ -32,10 +32,10 @@ class MockSocket:
 def mock_socket(monkeypatch):
     monkeypatch.setattr(socket, 'socket', MockSocket)
 
-@pytest.mark.parametrize('name, author, riddle, sol, path, server_ip, server_port',
+@pytest.mark.parametrize('name, creator, riddle, sol, path, server_ip, server_port',
                          [('n', 'a', 'r', 's', '/home/user/spy.png', '1.2.3.4', 5678)])
-def test_send(mock_socket, name, author, riddle, sol, path, server_ip, server_port):
-    card = Card.create_from_path(name, author, riddle, sol, path)
+def test_send(mock_socket, name, creator, riddle, sol, path, server_ip, server_port):
+    card = Card.create_from_path(name, creator, riddle, sol, path)
     card.img.encrypt(sol)
     with Connection.connect(server_ip, server_port) as conn:
         c = card.serialize()
